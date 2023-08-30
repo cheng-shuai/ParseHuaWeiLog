@@ -97,7 +97,7 @@ public class ParseHuaWeiLog {
         if (!set.isEmpty()) {
             appendListToFile(set, filePath, count.getAndIncrement());
         }
-        System.out.println(filePath + "写入完成");
+        log.info(filePath + "写入完成");
     }
 
     /**
@@ -150,7 +150,7 @@ public class ParseHuaWeiLog {
             }
             //如果当前文件超过2G，就写入下一个文件
             if (Files.size(path) > 2 * 1024 * 1024 * 1024L) {
-                System.out.println(path + " 文件超过2G,开始写入下一个文件");
+                log.info(path + " 文件超过2G,开始写入下一个文件");
                 fileNum++;
             }
             //写入不同的文件中,第一次写入则不追加,否则追加
@@ -180,7 +180,7 @@ public class ParseHuaWeiLog {
                 Files.createFile(path);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            log.error("出现错误:", e);
         }
         ArrayList<ExcelResult> excelResults = new ArrayList<>();
         for (String s : set) {
@@ -211,7 +211,7 @@ public class ParseHuaWeiLog {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("写入" + excelFolderPath + "的Sheet" + fileNum);
+        log.info("写入" + excelFolderPath + "的Sheet" + fileNum);
         fileNum++;
     }
 
@@ -245,7 +245,7 @@ public class ParseHuaWeiLog {
                         .runAsync(() -> new ParseHuaWeiLog().ParseHuaWeiOneDayLog(writeFile, parent + strings[2] + "\\" + strings[2] + ".xlsx", strings[1], strings[0]), executor);
                 list.add(future);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                log.error("出现错误:", e);
             }
         }
         //if (thread != null)
@@ -254,6 +254,6 @@ public class ParseHuaWeiLog {
             CompletableFuture.allOf(list.toArray(new CompletableFuture[0])).join();
         writeFile.shutdown();
         executor.shutdown();
-        System.out.println("程序完成");
+        log.info("程序完成");
     }
 }
