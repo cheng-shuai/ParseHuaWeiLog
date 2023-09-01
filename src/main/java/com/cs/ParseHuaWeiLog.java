@@ -44,7 +44,9 @@ public class ParseHuaWeiLog {
      * @param LogGroup  日志组id
      */
     public void ParseHuaWeiOneDayLog(ThreadPoolExecutor executor, String filePath, String LogStream, String LogGroup) {
+        //获取日志的开始时间
         long endTime = System.currentTimeMillis();
+        //获取日志的结束时间,默认为获取一天之内的全部日志
         long startTime = endTime - 24 * 60 * 60 * 1000;
         String ak = "your ak";
         String sk = "your sk";
